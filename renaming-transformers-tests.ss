@@ -31,8 +31,8 @@
   (let-syntax ((m1
                 (er-macro-transformer
                   (lambda (n r c)
-                    (list (r 'sub1) (cadr n))))))
-    (define (sub1 . _)
+                    (list (r '-) (cadr n) 1)))))
+    (define (- . _)
       (error #f "argh."))
     (if (zero? n)
         1
