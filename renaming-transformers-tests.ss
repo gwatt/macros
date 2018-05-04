@@ -25,6 +25,8 @@
 ;;; 
 ;;;
 
+; this test doesn't work in r6rs, but neither does the syntax-rules equivalent
+
 (define (fac n)
   (let-syntax ((m1
                 (er-macro-transformer
