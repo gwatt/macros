@@ -1,0 +1,2 @@
+This is a playground for scheme macros, and in particular for implementing
+macro systems in terms of other macro systems.
