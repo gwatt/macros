@@ -1,30 +1,7 @@
 (library (renaming-transformers)
   (export ir-macro-transformer er-macro-transformer
     (rename (syntax->datum strip-syntax)))
-  (import (rnrs))
-
-  (define (syntax->tree stx)
-    (syntax-case stx ()
-      [(a . b) (cons (syntax->tree #'a) (syntax->tree #'b))]
-      [#(a ...) (list->vector (map syntax->tree #'(a ...)))]
-      [a #'a]))
-
-  (define (syntax-car stx)
-    (syntax-case stx ()
-      [(a . d) #'a]))
-
-  (define (rewrap tree default)
-    (let wrapper ([t tree])
-      (syntax-case t ()
-        [(a . b) (cons (wrapper #'a) (wrapper #'b))]
-        [#(a ...) (list->vector
-                    (map (lambda (x)
-                           (rewrap x default))
-                      (list->vector #'(a ...))))]
-        [a
-         (if (symbol? #'a)
-             (default #'a)
-             #'a)])))
+  (import (rnrs) (syntax-utils))
 
   (define (make-compare wrap)
     (letrec
@@ -38,10 +15,6 @@
              (free-identifier=? x y)]
             [else (equal? x y)]))])
       compare))
-
-  (define (make-wrap scope)
-    (lambda (x)
-      (datum->syntax scope x)))
 
   (define-syntax ir-macro-transformer
     (lambda (stx)
